@@ -10,6 +10,11 @@ app = Flask(__name__)
 
 client = WebClient(token=os.getenv("SLACK_BOT_TOKEN"))
 
+
+@app.route('/')
+def index():
+    return "Rickroll Bot is running!"
+
 @app.route('/slack/events', methods=['POST'])
 def slack_events():
     data = request.json
@@ -33,4 +38,8 @@ def slack_events():
                     )
                 except SlackApiError as e:
                     print(f"Error posting message: {e.response['error']}")
+    return jsonify({"status": "ok"})
                     
+
+if __name__ == '__main__':
+    app.run(port=int(os.getenv("PORT", 5000)), debug=True)
